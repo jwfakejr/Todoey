@@ -7,17 +7,21 @@
 //
 
 import UIKit
-import CoreData
-
+import RealmSwift
 
 class CategoryViewController: UITableViewController {
+    
+    
+    let realm = try! Realm()
+    
+    
     var categories = [Category]()
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadItems()
+        //loadItems()
      }
 
     override func didReceiveMemoryWarning() {
@@ -70,12 +74,12 @@ class CategoryViewController: UITableViewController {
             /// what will happen once the user clicks the Add Item button on our UIAlert
             
             
-            let newCategory = Category(context: self.context)
+            let newCategory = Category()
             
             newCategory.name = textField.text!
        
             self.categories.append(newCategory)
-            self.saveCategories()
+            self.save(category: newCategory)
             self.tableView.reloadData()
         }
         
@@ -90,24 +94,26 @@ class CategoryViewController: UITableViewController {
     }
     
     
-    func saveCategories() {
+    func save(category: Category) {
         
         do {
-            try context.save()
+            try realm.write {
+                realm.add(category)
+            }
         }catch  {
             print("Error saving context, \(error)")
         }
         
     }
     // default value used with call with no parameter
-    func loadItems(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
-        
-        do {
-            categories = try context.fetch(request)
-        }catch  {
-            print("Error fetching data from  context, \(error)")
-        }
-        tableView.reloadData()
-    }
+//    func loadItems(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+//        
+//        do {
+//            categories = try context.fetch(request)
+//        }catch  {
+//            print("Error fetching data from  context, \(error)")
+//        }
+//        tableView.reloadData()
+//    }
     
 }
