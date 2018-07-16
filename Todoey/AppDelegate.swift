@@ -17,19 +17,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+
+       
+//        print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String)
         print(Realm.Configuration.defaultConfiguration.fileURL)
-        let data = Data()
-        data.name = "John"
-        data.age = 65
         
+       
         do {
-           let realm = try Realm()
-            try realm.write {
-                realm.add(data)
-            }
+            let realm = try Realm()
+           
         } catch {
-            print("Problem adding data to realm")
-        
+            print("Error initializing or storing realm data")
+        }
         
         
         
